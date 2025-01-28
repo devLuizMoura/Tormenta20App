@@ -1,0 +1,17 @@
+[
+    {
+      "nome": "Aragorn",
+      "classe": "Guerreiro",
+      "pv": 20,
+      "defesa": 16,
+      "atributos": {
+        "forca": 18,
+        "destreza": 14,
+        "constituicao": 16,
+        "inteligencia": 12,
+        "sabedoria": 14,
+        "carisma": 10
+      }
+    }
+  ]
+  

@@ -1,23 +1,8 @@
+import { Cena, Opcao } from '../types';
+import { simularCombate } from './combate';
+import { testePericia } from './testes';
+import monstros from '../data/monstros.json';
 import cenas from '../data/cenas.json';
-
-// Definindo o tipo para uma cena
-type Cena = {
-  id: number;
-  titulo: string;
-  descricao: string;
-  opcoes: Opcao[];
-};
-
-type Opcao = {
-  texto: string;
-  proximaCena?: number;
-  tipo?: string;
-  monstro?: string;
-  pericia?: string;
-  cd?: number;
-  sucesso?: number;
-  falha?: number;
-};
 
 export function getCena(id: number): Cena {
   const cena = cenas.find((c) => c.id === id);
@@ -30,12 +15,24 @@ export function getCena(id: number): Cena {
 export function processarEscolha(cenaAtual: Cena, escolha: number): Cena {
   const opcao = cenaAtual.opcoes[escolha];
   if (opcao.tipo === "combate") {
-    // Lógica de combate (a ser implementada)
-    return getCena(opcao.sucesso || 1); // Exemplo: retorna a cena de sucesso
+    const monstro = monstros.find((m) => m.nome === opcao.monstro);
+    if (monstro) {
+      const jogador = { pv: 20, defesa: 10, ataque: 8 }; // Exemplo de jogador
+      const vitoria = simularCombate(jogador, monstro);
+      if (opcao.sucesso !== undefined && opcao.falha !== undefined) {
+        return getCena(vitoria ? opcao.sucesso : opcao.falha);
+      }
+    }
   } else if (opcao.tipo === "teste") {
-    // Lógica de teste de perícia (a ser implementada)
-    return getCena(opcao.sucesso || 1); // Exemplo: retorna a cena de sucesso
-  } else {
-    return getCena(opcao.proximaCena || 1);
+    if (opcao.pericia !== undefined && opcao.cd !== undefined) {
+      const sucesso = testePericia(opcao.pericia, opcao.cd);
+      if (opcao.sucesso !== undefined && opcao.falha !== undefined) {
+        return getCena(sucesso ? opcao.sucesso : opcao.falha);
+      }
+    }
   }
+  if (opcao.proximaCena !== undefined) {
+    return getCena(opcao.proximaCena);
+  }
+  throw new Error('Nenhuma próxima cena definida.');
 }

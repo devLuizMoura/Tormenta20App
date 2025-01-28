@@ -1,40 +1,63 @@
-import React, { useState } from 'react';
-import { View, Text, Button } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, Button } from 'react-native';
 import { getCena, processarEscolha } from '../services/narrativa';
+import { salvarProgresso, carregarProgresso } from '../services/storage';
+import { Cena } from '../types';
 
-// Definindo o tipo para uma cena
-type Cena = {
-  id: number;
-  titulo: string;
-  descricao: string;
-  opcoes: Opcao[];
-};
-
-type Opcao = {
-  texto: string;
-  proximaCena?: number;
-  tipo?: string;
-  monstro?: string;
-  pericia?: string;
-  cd?: number;
-  sucesso?: number;
-  falha?: number;
-};
+const styles = StyleSheet.create({
+  container: {
+    padding: 20,
+    backgroundColor: '#f0f0f0',
+    flex: 1,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  text: {
+    fontSize: 16,
+    marginBottom: 10,
+  },
+  button: {
+    marginBottom: 10,
+  },
+});
 
 export default function NarrativaScreen() {
-  const [cenaAtual, setCenaAtual] = useState<Cena>(getCena(1)); // Começa na primeira cena
+  const [cenaAtual, setCenaAtual] = useState<Cena | null>(null);
 
-  const handleEscolha = (index: number) => {
-    const novaCena = processarEscolha(cenaAtual, index);
-    setCenaAtual(novaCena);
+  useEffect(() => {
+    async function loadProgresso() {
+      const progresso = await carregarProgresso();
+      setCenaAtual(progresso !== null ? getCena(progresso) : getCena(1));
+    }
+    loadProgresso();
+  }, []);
+
+  const handleEscolha = async (escolha: number) => {
+    if (cenaAtual) {
+      const novaCena = processarEscolha(cenaAtual, escolha);
+      setCenaAtual(novaCena);
+      await salvarProgresso(novaCena.id);
+    }
   };
 
+  if (!cenaAtual) {
+    return <Text>Carregando...</Text>;
+  }
+
   return (
-    <View>
-      <Text style={{ fontSize: 20, fontWeight: 'bold' }}>{cenaAtual.titulo}</Text>
-      <Text>{cenaAtual.descricao}</Text>
+    <View style={styles.container}>
+      <Text style={styles.title}>{cenaAtual.titulo}</Text>
+      <Text style={styles.text}>{cenaAtual.descricao}</Text>
       {cenaAtual.opcoes.map((opcao, index) => (
-        <Button key={index} title={opcao.texto} onPress={() => handleEscolha(index)} />
+        <View key={index} style={styles.button}>
+          <Button
+            title={opcao.texto}
+            onPress={() => handleEscolha(index)}
+          />
+        </View>
       ))}
     </View>
   );

@@ -1,30 +1,50 @@
 [
-    {
-      "id": 1,
-      "titulo": "Início da Aventura",
-      "descricao": "Vocês estão na vila de Selentine. O que fazem?",
-      "opcoes": [
-        {"texto": "Conversar com Orendir", "proximaCena": 2},
-        {"texto": "Explorar os esgotos", "proximaCena": 3}
-      ]
-    },
-    {
-      "id": 2,
-      "titulo": "Conversando com Orendir",
-      "descricao": "Orendir oferece uma missão. Aceitam?",
-      "opcoes": [
-        {"texto": "Aceitar a missão", "proximaCena": 4},
-        {"texto": "Recusar a missão", "proximaCena": 5}
-      ]
-    },
-    {
-      "id": 3,
-      "titulo": "Explorando os Esgotos",
-      "descricao": "Vocês encontram um glop de gelo. O que fazem?",
-      "opcoes": [
-        {"texto": "Atacar o glop", "tipo": "combate", "monstro": "Glop de Gelo", "sucesso": 6, "falha": 7},
-        {"texto": "Tentar fugir", "proximaCena": 7}
-      ]
-    }
-  ]
-  
+  {
+    "id": 1,
+    "titulo": "Início da Aventura",
+    "descricao": "Você está em uma taverna...",
+    "opcoes": [
+      {
+        "texto": "Conversar com o taverneiro",
+        "proximaCena": 2
+      },
+      {
+        "texto": "Sair da taverna",
+        "proximaCena": 3
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "titulo": "Conversando com o Taverneiro",
+    "descricao": "O taverneiro lhe conta sobre uma missão...",
+    "opcoes": [
+      {
+        "texto": "Aceitar a missão",
+        "proximaCena": 4
+      },
+      {
+        "texto": "Recusar a missão",
+        "proximaCena": 5
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "titulo": "Saindo da Taverna",
+    "descricao": "Você sai da taverna e encontra um monstro...",
+    "opcoes": [
+      {
+        "texto": "Lutar com o monstro",
+        "tipo": "combate",
+        "monstro": "Goblin",
+        "sucesso": 6,
+        "falha": 7
+      },
+      {
+        "texto": "Fugir",
+        "proximaCena": 8
+      }
+    ]
+  }
+]

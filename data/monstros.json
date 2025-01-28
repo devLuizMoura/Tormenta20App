@@ -1,0 +1,21 @@
+[
+    {
+      "nome": "Glop de Gelo",
+      "pv": 15,
+      "defesa": 14,
+      "ataque": 7 
+    },
+    {
+      "nome": "Lobo Branco",
+      "pv": 14,
+      "defesa": 14,
+      "ataque": 7 
+    },
+    {
+        "nome": "Dragão Negro",
+        "pv": 50,
+        "defesa": 20,
+        "ataque": 15
+      } 
+  ]
+  
